@@ -1,0 +1,131 @@
+// -------------------
+// Global Section
+// -------------------
+
+#include <Servo.h>  // includes servo library
+
+Servo servoRight;
+
+Servo servoLeft;
+
+// ----------
+// Functions
+// ----------
+
+//robot turns left
+
+void left() {
+
+  //reverses for .5 seconds
+
+  servoRight.writeMicroseconds(1400);
+
+  servoLeft.writeMicroseconds(1600);
+
+  delay(500);
+
+  //turns left for .8 seconds
+
+  servoRight.writeMicroseconds(1500);
+
+  servoLeft.writeMicroseconds(1400);
+
+  delay(800);
+
+}
+
+//robots turns right
+
+void right() {
+
+  //reverses for .5 seconds
+
+  servoRight.writeMicroseconds(1400);
+
+  servoLeft.writeMicroseconds(1600);
+
+  delay(500);
+
+  //turns right for .8 seconds
+
+  servoRight.writeMicroseconds(1600);
+
+  servoLeft.writeMicroseconds(1500);
+
+  delay(800);
+
+}
+
+//robot goes forward
+
+void forward() {
+
+  servoRight.writeMicroseconds(1600);
+
+  servoLeft.writeMicroseconds(1400);
+
+}
+
+// ----------------------
+// Setup - executes once
+// ----------------------
+
+void setup() {
+
+  Serial.begin(9600);
+
+  //allows bumpers to control robot movement
+
+  pinMode(8, INPUT);
+
+  pinMode(9, INPUT);
+
+  //attaches servo motors to pin 12 & 13
+
+  servoRight.attach(13);
+
+  servoLeft.attach(12);
+
+}
+
+// ------
+// Loop
+// ------
+
+void loop() {
+
+  bool bumper1 = digitalRead(8); // read the two pins and store the values in the variables
+
+  bool bumper2 = digitalRead(9); // bool stores a 1 or 0
+
+  Serial.print("bumper 1 (8) = "); // print out the two values to the serial monitor
+
+  Serial.println(bumper1);
+
+  Serial.print("bumper 2 (9) = ");
+
+  Serial.println(bumper2);
+
+   //reverse for .5 seconds
+
+  servoRight.writeMicroseconds(1400);//max speed counter-clockwise
+
+  servoLeft.writeMicroseconds(1600);//max speed clockwise
+
+  delay(500); 
+
+  if (digitalRead(9) == 0) { //if the left bumper is hit, turn right
+
+    right(); //reverses, then turns right
+
+  } else if (digitalRead(8) == 0) { //if the right bumper is hit, turn left
+
+    left(); //reverses, then turns left
+
+  } else { //if neither is hit, continue forward
+
+    forward(); //goes forward at max speed
+
+  }
+
+}
